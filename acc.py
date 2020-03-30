@@ -12,13 +12,23 @@ class Account:
 
     def deposit(self, amount):
         self.balance=self.balance + amount
-    
+  
     def commit(self):
         with open(self.tempfilepath, 'w') as file:
             file.write(str(self.balance))
 
-account=Account("balance.txt")
-print(account.balance)
-account.withdraw(100)
-print(account.balance)
-account.commit()
+#inherits the Account class
+class Checking(Account):
+
+    def __init__(self, filepath, fee):
+        Account.__init__(self, filepath)
+        self.fee=fee
+
+    def transfer(self, amount):
+        self.balance=self.balance - amount - self.fee
+
+checking=Checking("balance.txt", 1)
+checking.transfer(110)
+print(checking.balance)
+checking.commit()
+    
